@@ -18,21 +18,21 @@ const tiers = [
 ];
 
 
-function CreateRandom(bet)
+function CreateRandom(bet) //Function that generates Random fruits and symbols.
 { let num, arr=[];
 for( let i=0;i<15;i++)
 {
      num = Math.floor(Math.random() * 8); // Generate random number between 0 and 7
-            if (num == 4 && Math.floor(Math.random() * 3) < 2) {
+            if (num == 4 && Math.floor(Math.random() * 3) < 2) { //Adjust not to have scatters payments all the time
                 num = Math.floor(Math.random() * 7);
-            if (num == 7 && Math.floor(Math.random()*15>8))
+            if (num == 7 && Math.floor(Math.random()*15>8)) //Adjust 7 occurences to happen less than expected.
                 num = Math.floor(Math.random() * 6);
             }
-            if (i > 4) {    
+            if (i > 4) {    //Makes sure not to have scatters on the same row
                 while (num == 4 && arr[i - 5] == 4) {
                     num = Math.floor(Math.random() * 8);
                 }
-                if (i > 9) {
+                if (i > 9) {  //Makes sure not to have scatters on the same row
                     while (num == 4 && (arr[i - 5] == 4 || arr[i - 10] == 4)) {
                         num = Math.floor(Math.random() * 8);
                     }
@@ -49,10 +49,10 @@ return arr;
     
 }
 
-function PlataMare(bet, t) {
+function PlataMare(bet, t) { //Big Win function
     let array = [];
     let plata = 0;
-    const minWin = Math.floor((t * bet*(Math.random()+1))/3); // Minimum payout, 50% of (t * bet)
+    const minWin = Math.floor((t * bet*(Math.random()+1))/3); 
     const maxWin = minWin*(Math.floor(Math.random()*5)+1); // Maximum payout
     do {
         array = CreateRandom(bet);
@@ -70,7 +70,7 @@ function PlataMare(bet, t) {
     return array;
 }
 
-function PlataMedie(bet, t) {
+function PlataMedie(bet, t) { //Function that pays a medium ammount
     let array = [];
     let plata = 0;
     const minWin = Math.floor(t * bet * 0.5); 
@@ -85,7 +85,7 @@ function PlataMedie(bet, t) {
         const randomizedTarget = Math.floor(t * bet * randomMultiplier);
 
         if (plata >= randomizedTarget && plata <= maxWin) {
-            break; // Exit the loop if conditions are met
+            break; // Exit the loop if we fall betweeb the range
         }
     } while (true);
 
@@ -93,7 +93,7 @@ function PlataMedie(bet, t) {
 }
 
 
-function CalculeazaWin(a, bet)
+function CalculeazaWin(a, bet) //The place where magic happens
 { let row1, row2, row3, stw=0, d1=1,d2=1;
 row1=a.slice(0,5);
 row2=a.slice(5,10);
@@ -102,16 +102,16 @@ stw+=Consecutive (row1,bet);
 stw+=Consecutive (row2, bet);
 stw+=Consecutive (row3, bet);
 stw+=Scatters(a, bet);
-if(row1[0] ==row2[1]) d1++;
+if(row1[0] ==row2[1]) d1++; //Diagonal 1 consecutive checking
 if(d1==2 &&  row1[0]==row3[2]) d1++;
 if(d1==3 && row1[0]==row2[3]) d1++;
 if(d1==4 && row1[0]==row1[4]) d1++;
 
-if(d1>1)
+if(d1>1) 
 {
 stw+=tiers[fruits[row1[0]].tiers].pay[d1-1]*bet;
 }
-if(row3[0]==row2[1]) d2++;
+if(row3[0]==row2[1]) d2++; //Diagonal 2 consecutive checking
 if(d2==2 && row3[0]==row1[2]) d2++;
 if(d2==3 && row3[0]==row2[3]) d2++;
 if(d2==4 && row3[0]==row3[4]) d2++;
@@ -123,7 +123,7 @@ if(d2>1)
 return stw;
 }
 
-function GreatGuy(a, ok)
+function GreatGuy(a, ok) //Function I don't remember what I was going to use for and left it unfinished
 {
     for(let i=0;i<5;i++)
     { if(a[0]==a[1] && fruits[a[0]].tiers<=1) a[2]=a[0];
@@ -135,7 +135,7 @@ function GreatGuy(a, ok)
 }
 
 
-function DoubleGame(bet)
+function DoubleGame(bet)  //Funtion I plan to use in future implementations, when the game will have an interface
 {  let win=bet;
   let playerGuess=Math.floor(Math.random()*18), computerGuess=Math.floor(Math.random()*17)+3;
     if(playerGuess>=computerGuess)
@@ -146,7 +146,7 @@ function DoubleGame(bet)
     return win;
 }
 
-function Scatters(big,bet)
+function Scatters(big,bet) //Scatter function implementation
 { 
 let scatters=0;
  for(let i=0 ;i<big.length;i++)
@@ -158,7 +158,7 @@ let scatters=0;
     else return 0;
 }
 
-function Oftica(numberOfSearches, levelOfOftica, a,bet) {
+function Oftica(numberOfSearches, levelOfOftica, a,bet) { //The function that pays 0 and makes you mad
     for (let j = 0; j < numberOfSearches; j++) {
         let ofticaArray = [];
         let repetitii = 8;
@@ -194,7 +194,7 @@ function Consecutive(array,bet)
 function CheckWin(array, count, element, bet) {
     let win = 0;
     let fruit = fruits[element]; 
-    if (fruit && fruit.value !== 4) { 
+    if (fruit && fruit.value !== 4) {  // Check to exclude having a line of scatteres , they got a different type of function 
         let num = fruit.tiers;
         for (const tier of tiers) {
             if (tier.tier === num)
@@ -213,7 +213,7 @@ for (let i = 0; i < n; i++) {
     a=num;
 }
 let chance1=Math.floor(Math.random()*100);
-if(chance1<23)
+if(chance1<23)  //Ajust for chance1 to get more or less randomness in the generated output.
 {
     let chance2=Math.ceil(Math.random()*2+2);
 let ofticaSequence = Oftica(20000, chance2, a,bet);
@@ -222,7 +222,7 @@ if (ofticaSequence.length === 15) {
     a = ofticaSequence;
 }
 }
-if(chance1>90)
+if(chance1>90) //Play with the ranges to balance the game, now it's kind of unrealistic, paying all the time.
 a=PlataMare(bet, 70);
 if(chance1>50 && chance1<89)
 a=PlataMedie(bet, 3);
@@ -235,8 +235,8 @@ console.log(row2);
 console.log(row3);
 console.log(" ");
 console.log(CalculeazaWin(a, bet)); //This logs the actual payment
-profit+=stw;
-profit-=bet;
+profit+=stw;  //This and the next line implement profit counting, i was using a for loop with many steps to calculate the totalWin and figure out how fair the game is
+profit-=bet;  //Now the game is favoring the player 
 console.log(chance1);
 
 
