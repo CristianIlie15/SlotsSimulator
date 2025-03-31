@@ -28,7 +28,7 @@ for( let i=0;i<15;i++)
             if (num == 7 && Math.floor(Math.random()*15>8)) //Adjust 7 occurences to happen less than expected.
                 num = Math.floor(Math.random() * 6);
             }
-            if (i > 4) {    //Makes sure not to have scatters on the same row
+            if (i > 4) {    //Makes sure not to have 2 ore more scatters on the same column
                 while (num == 4 && arr[i - 5] == 4) {
                     num = Math.floor(Math.random() * 8);
                 }
